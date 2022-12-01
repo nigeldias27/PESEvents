@@ -5,6 +5,7 @@ export function EventCard(props) {
   const router = useRouter();
   return (
     <div
+      key={props.key}
       onClick={() => {
         router.push("/event/" + `${props.id}`);
       }}

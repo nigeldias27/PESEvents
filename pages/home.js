@@ -225,11 +225,12 @@ export default function Home() {
         {search == "" ? "All Events" : "Results for: '" + search + "'"}
       </Typography>
       <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
-        {eventList.map((val) => {
+        {eventList.map((val, i) => {
           console.log(val);
           if (search == "") {
             return (
               <EventCard
+                key={i.toString()}
                 name={`${val.name}`}
                 imageURL={`${val.imageURL}`}
                 venue={`${val.venue}`}
@@ -241,6 +242,7 @@ export default function Home() {
             if (val.name.includes(search) == true) {
               return (
                 <EventCard
+                  key={i.toString()}
                   name={`${val.name}`}
                   imageURL={`${val.imageURL}`}
                   venue={`${val.venue}`}
