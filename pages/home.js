@@ -20,7 +20,7 @@ import {
 
 import { getSession, signOut } from "next-auth/react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { EventCard } from "../components/eventCard";
 import Modal from "@mui/material/Modal";
 
@@ -45,6 +45,7 @@ export default function Home() {
   const [profile, setProfile] = useState("");
   const [addOption, setAddOption] = useState(false);
   const [search, setSearch] = useState("");
+  const myRef = useRef(null);
   const open = Boolean(anchorEl);
   useEffect(() => {
     initState();
@@ -138,8 +139,13 @@ export default function Home() {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={() => {}}>Profile</MenuItem>
-              <MenuItem onClick={() => {}}>My account</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  router.push("/profile");
+                }}
+              >
+                Profile
+              </MenuItem>
               <MenuItem
                 onClick={async () => {
                   await signOut();
@@ -165,7 +171,7 @@ export default function Home() {
               backgroundColor: "rgba(255,255,255,0.9)",
               boxShadow:
                 "rgba(0, 0, 0, 0.1) 0px 1px 1px 0px inset, rgba(0, 0, 0, 0.25) 0px 50px 100px -20px, rgba(173, 216, 230, 0.3) 0px 30px 60px -30px",
-              padding: "30px",
+              padding: "50px",
               borderRadius: "50px",
               width: "50vw",
             }}
@@ -178,12 +184,8 @@ export default function Home() {
               color={"#B0B0B0"}
               textAlign={"center"}
             >
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged.
+              Welcome to PESEvents! A single unified platform which makes events
+              easy and accessible to all students
             </Typography>
             <Box
               display={"flex"}
@@ -205,6 +207,7 @@ export default function Home() {
                 variant="contained"
                 onClick={() => {
                   setSearch(document.getElementById("free-solo-demo").value);
+                  myRef.current.scrollIntoView({ behaviour: "smooth" });
                 }}
               >
                 Search
@@ -213,7 +216,12 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Typography variant="h3" fontWeight={"bold"} style={{ padding: "48px" }}>
+      <Typography
+        ref={myRef}
+        variant="h3"
+        fontWeight={"bold"}
+        style={{ padding: "48px" }}
+      >
         {search == "" ? "All Events" : "Results for: '" + search + "'"}
       </Typography>
       <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>

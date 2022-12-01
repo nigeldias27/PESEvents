@@ -79,6 +79,7 @@ export default function InfoForm() {
                 ? studentQnA.map((val, i) => {
                     return (
                       <TextField
+                        key={i.toString()}
                         id="outlined-name"
                         value={val.val}
                         label={`${val.input}`}
@@ -89,6 +90,7 @@ export default function InfoForm() {
                 : clubQnA.map((val, i) => {
                     return (
                       <TextField
+                        key={i.toString()}
                         id="outlined-name"
                         value={val.val}
                         label={`${val.input}`}

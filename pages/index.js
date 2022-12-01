@@ -69,16 +69,15 @@ export default function Home() {
               style={{ marginBottom: "24px", marginTop: "24px" }}
               color="#78909c"
             >
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              A single unified platform which makes events easy and accessible
+              to all students. PESEvents aims to display intuitively events that
+              students would be interested in and provide a way of club heads to
+              publicize and make announcements to a vast array of people.
+              Therfore, PESEvents targets students and club heads. It enables
+              students to keep track of ongoing/future happenings taking
+              place.It provides a way for club heads to publicize and make
+              announcements to a vast array of people. So what are you waiting
+              for? Sign Up NOW!
             </Typography>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
