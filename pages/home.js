@@ -7,6 +7,7 @@ import {
   Button,
   Box,
   TextField,
+  Autocomplete,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { initializeApp } from "firebase/app";
@@ -43,6 +44,7 @@ export default function Home() {
   const [eventList, setEventList] = useState([]);
   const [profile, setProfile] = useState("");
   const [addOption, setAddOption] = useState(false);
+  const [search, setSearch] = useState("");
   const open = Boolean(anchorEl);
   useEffect(() => {
     initState();
@@ -51,6 +53,7 @@ export default function Home() {
     const mysession = await getSession();
     if (mysession == null) {
       router.push("/");
+      return;
     }
     setProfile(mysession.user.image);
     const response = await axios.get(
@@ -83,7 +86,7 @@ export default function Home() {
       <div
         style={{
           height: "100vh",
-          backgroundColor: "#90caf9",
+          backgroundColor: "#ADD8E6",
         }}
       >
         <div
@@ -160,15 +163,21 @@ export default function Home() {
           <div
             style={{
               backgroundColor: "rgba(255,255,255,0.9)",
+              boxShadow:
+                "rgba(0, 0, 0, 0.1) 0px 1px 1px 0px inset, rgba(0, 0, 0, 0.25) 0px 50px 100px -20px, rgba(173, 216, 230, 0.3) 0px 30px 60px -30px",
               padding: "30px",
               borderRadius: "50px",
               width: "50vw",
             }}
           >
-            <Typography fontWeight={"bold"} variant="h5" textAlign={"center"}>
+            <Typography fontWeight={"bold"} variant="h4" textAlign={"center"}>
               PESEvents
             </Typography>
-            <Typography color={"#B0B0B0"} textAlign={"center"}>
+            <Typography
+              style={{ marginTop: "12px", paddingBottom: "12px" }}
+              color={"#B0B0B0"}
+              textAlign={"center"}
+            >
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
@@ -176,24 +185,63 @@ export default function Home() {
               survived not only five centuries, but also the leap into
               electronic typesetting, remaining essentially unchanged.
             </Typography>
+            <Box
+              display={"flex"}
+              flexDirection="row"
+              justifyContent={"center"}
+              margin="12px"
+            >
+              <Autocomplete
+                fullWidth
+                id="free-solo-demo"
+                freeSolo
+                options={eventList.map((option) => option.name)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Search for events" />
+                )}
+              />
+              <Button
+                style={{ marginLeft: "12px", padding: "0px 24px 0px 24px" }}
+                variant="contained"
+                onClick={() => {
+                  setSearch(document.getElementById("free-solo-demo").value);
+                }}
+              >
+                Search
+              </Button>
+            </Box>
           </div>
         </div>
       </div>
       <Typography variant="h3" fontWeight={"bold"} style={{ padding: "48px" }}>
-        All Events
+        {search == "" ? "All Events" : "Results for: '" + search + "'"}
       </Typography>
       <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
         {eventList.map((val) => {
           console.log(val);
-          return (
-            <EventCard
-              name={`${val.name}`}
-              imageURL={`${val.imageURL}`}
-              venue={`${val.venue}`}
-              date={`${val.date}`}
-              id={`${val._id}`}
-            ></EventCard>
-          );
+          if (search == "") {
+            return (
+              <EventCard
+                name={`${val.name}`}
+                imageURL={`${val.imageURL}`}
+                venue={`${val.venue}`}
+                date={`${val.date}`}
+                id={`${val._id}`}
+              ></EventCard>
+            );
+          } else {
+            if (val.name.includes(search) == true) {
+              return (
+                <EventCard
+                  name={`${val.name}`}
+                  imageURL={`${val.imageURL}`}
+                  venue={`${val.venue}`}
+                  date={`${val.date}`}
+                  id={`${val._id}`}
+                ></EventCard>
+              );
+            }
+          }
         })}
       </div>
       <Modal
@@ -325,7 +373,7 @@ export default function Home() {
                 input.click();
               }}
             >
-              Add Image
+              Submit
             </Button>
           </div>
         </Box>

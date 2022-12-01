@@ -22,11 +22,13 @@ export default function EventPage() {
   const [loading, setLoading] = useState(false);
   const open = Boolean(anchorEl);
   useEffect(() => {
-    if (data == "") {
+    if (data == "" || router.isReady == false) {
       setLoading(true);
     }
-    initState();
-  }, []);
+    if (router.isReady) {
+      initState();
+    }
+  }, [router.isReady]);
   const initState = async () => {
     const mysession = await getSession();
     setProfile(mysession.user.image);
@@ -35,6 +37,19 @@ export default function EventPage() {
       `${process.env.NEXT_PUBLIC_API}` + "getEvent",
       { id: eventInd }
     );
+    var theDate = new Date(response.data.createdAt);
+    theDate.setDate(
+      theDate.getDate() + parseInt(response.data.registrationCloses)
+    );
+    var nowdate = Date.now();
+    if (nowdate > theDate) {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}` + "deleteEvent",
+        { id: eventInd }
+      );
+      router.push("/home");
+    }
+    response.data.registrationCloses = theDate.toLocaleString();
     console.log(response.data);
     const stringified = JSON.stringify(response.data);
     console.log(stringified);
@@ -137,8 +152,7 @@ export default function EventPage() {
               Registration Closes in
             </Typography>
             <Typography style={{ color: "#B80000" }}>
-              {" "}
-              {JSON.parse(data).registrationCloses} days
+              {JSON.parse(data).registrationCloses}
             </Typography>
           </div>
         </div>

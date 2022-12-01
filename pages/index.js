@@ -35,7 +35,6 @@ export default function Home() {
         <Typography fontWeight={"bold"} variant="h6">
           PESEvents
         </Typography>
-        <Button>Login</Button>
       </div>
       <Grid container>
         <Grid
@@ -89,7 +88,7 @@ export default function Home() {
                   router.push("/auth/student");
                 }}
               >
-                Sign Up as A Student
+                Sign Up/Login as A Student
               </Button>
               <Button
                 variant="contained"
@@ -97,7 +96,7 @@ export default function Home() {
                   router.push("/auth/clubhead");
                 }}
               >
-                Sign Up as A Club Head
+                Sign Up/Login as A Club Head
               </Button>
             </div>
           </div>

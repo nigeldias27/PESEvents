@@ -8,6 +8,13 @@ export function EventCard(props) {
       onClick={() => {
         router.push("/event/" + `${props.id}`);
       }}
+      onMouseEnter={(e) => {
+        e.target.style.boxShadow =
+          "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px";
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.boxShadow = "rgba(0, 0, 0, 0.16) 0px 1px 4px";
+      }}
       style={{
         display: "inline-block",
         boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",

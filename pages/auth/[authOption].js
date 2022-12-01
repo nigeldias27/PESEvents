@@ -4,21 +4,65 @@ import {
   Card,
   CardContent,
   Typography,
+  Alert,
   Stack,
 } from "@mui/material";
 import { useSession, signIn, signOut, getSession } from "next-auth/react";
 import styles from "../../styles/Home.module.css";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Auth() {
+  const [validEmail, setValidEmail] = useState(false);
+  const clubList = [
+    "writeangle@pes.edu",
+    "themusicclub@pes.edu",
+    "grimmreaders@pes.edu",
+    "aikya@pes.edu",
+    "teamencore.pesu@gmail.com",
+    "ieee.ras.rr@pes.edu",
+    "dsgnr@pes.edu",
+    "equinox@pes.edu",
+    "ninaada@pes.edu",
+    "throughthelens@pes.edu",
+    "alcoding@pes.edu",
+    "gdc@pes.edu",
+    "sanskrithi@pes.edu",
+    "ieee_sb_rr@pes.edu",
+    "qqc@pes.edu",
+    "tedxpesu@gmail.com",
+    "rotaract@pes.edu",
+    "dsc@pes.edu",
+    "acmw@pes.edu",
+    "debsoc@pes.edu",
+    "dhruva@pes.edu",
+    "team.trance.pes@gmail.com",
+    "ecell@pes.edu",
+    "vegaracingelectric@gmail.com",
+    "pesmunsociety@gmail.com",
+    "pesos@pes.edu",
+    "aeolus@pes.edu",
+    "mahilai@pes.edu",
+    "pesuactioncut@gmail.com",
+    "csr@pes.edu",
+    "hackerspace@pes.edu",
+    "pes.mlab@gmail.com",
+    " innovationlab@pes.edu",
+    "linguista.club@gmail.com",
+    "fyi.pes@gmail.com",
+  ];
   const { data: session } = useSession();
   const router = useRouter();
   const { authOption } = router.query;
   useEffect(() => {
-    initstate();
-  }, []);
+    if (router.isReady) {
+      initstate();
+      if (localStorage.getItem("validEmail") == "true") {
+        setValidEmail(true);
+      }
+    }
+  }, [router.isReady]);
 
   const initstate = async () => {
     const mysession = await getSession();
@@ -38,10 +82,19 @@ export default function Auth() {
           router.push("/notverified");
         }
       } else {
-        if (authOption == undefined) {
-          router.push("/moreInfo/clubhead");
+        if (
+          authOption == "clubhead" &&
+          clubList.includes(mysession.user.email) == false
+        ) {
+          console.log("Signing out");
+          await signOut();
+          localStorage.setItem("validEmail", "true");
+          console.log("Transferring to the first page");
+        } else {
+          console.log(clubList.includes(mysession.user.email));
+          localStorage.setItem("validEmail", "false");
+          router.push("/moreInfo/" + authOption);
         }
-        router.push("/moreInfo/" + authOption);
       }
     }
   };
@@ -106,6 +159,13 @@ export default function Auth() {
                 ></img>
                 Github
               </Button>
+              {validEmail ? (
+                <Alert severity="error">
+                  Kindly sign up from an official club email id
+                </Alert>
+              ) : (
+                <div></div>
+              )}
             </Stack>
           </CardContent>
         </Card>
