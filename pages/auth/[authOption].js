@@ -51,6 +51,7 @@ export default function Auth() {
     " innovationlab@pes.edu",
     "linguista.club@gmail.com",
     "fyi.pes@gmail.com",
+    "developer.nonbody@gmail.com",
   ];
   const { data: session } = useSession();
   const router = useRouter();
